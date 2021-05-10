@@ -57,15 +57,24 @@ public class BotConfiguration {
                 .flatMap(VoiceState::getChannel)
                 .flatMap(channel -> channel.join(spec -> spec.setProvider(provider)))
                 .then());
+
         final TrackScheduler scheduler = new TrackScheduler(player);
 
         commands.put("play", event -> Mono.justOrEmpty(event.getMessage().getContent())
                 .map(content -> Arrays.asList(content.split(" ")))
                 .doOnNext(command -> playerManager.loadItem(command.get(1), scheduler))
                 .then());
+        commands.put("pause", event -> Mono.justOrEmpty(event.getMessage().getContent())
+                .map(c->Arrays.asList(c.split(" ")))
+                .doOnNext(command -> player.setPaused(true))
+                .then());
+        commands.put("resume", event -> Mono.justOrEmpty(event.getMessage().getContent())
+                .map(com->Arrays.asList(com.split(" ")))
+                .doOnNext(command -> player.setPaused(false))
+                .then());
         commands.put("stop", event -> Mono.justOrEmpty(event.getMessage().getContent())
                 .map(c->Arrays.asList(c.split(" ")))
-                .doOnNext(command -> playerManager.loadItem(command.get(2), scheduler))
+                .doOnNext(command -> player.stopTrack())
                 .then());
     }
 
