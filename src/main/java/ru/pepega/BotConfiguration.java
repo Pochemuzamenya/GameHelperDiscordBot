@@ -9,9 +9,11 @@ import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBu
 import discord4j.core.DiscordClientBuilder;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.Event;
+import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.VoiceState;
 import discord4j.core.object.entity.Member;
+import discord4j.core.object.entity.User;
 import discord4j.voice.AudioProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +22,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import ru.pepega.commands.Command;
 import ru.pepega.listener.EventListener;
 
 import java.util.Arrays;
@@ -33,7 +34,7 @@ public class BotConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger( BotConfiguration.class );
 
-    private static final Map<String, Command> commands = new HashMap<>();
+    /*private static final Map<String, EventListener> commands = new HashMap<>();
 
 
 
@@ -49,9 +50,7 @@ public class BotConfiguration {
 
         AudioProvider provider = new LavaPlayerAudioProvider(player);
 
-        commands.put("здарова", event -> event.getMessage().getChannel()
-                .flatMap(channel -> channel.createMessage("Здарова!"))
-                .then());
+
         commands.put("join", event -> Mono.justOrEmpty(event.getMember())
                 .flatMap(Member::getVoiceState)
                 .flatMap(VoiceState::getChannel)
@@ -76,7 +75,7 @@ public class BotConfiguration {
                 .map(c->Arrays.asList(c.split(" ")))
                 .doOnNext(command -> player.stopTrack())
                 .then());
-    }
+    }*/
 
     @Value("${token}")
     private String token;
@@ -93,19 +92,26 @@ public class BotConfiguration {
                     .login()
                     .block();
 
+            client.getEventDispatcher().on(ReadyEvent.class)
+                    .subscribe(event -> {
+                        User self = event.getSelf();
+                        System.out.println(String.format("Logged in as %s#%s", self.getUsername(), self.getDiscriminator()));
+                    });
+
             for(EventListener<T> listener : eventListeners) {
                 client.on(listener.getEventType())
                         .flatMap(listener::execute)
                         .onErrorResume(listener::handleError)
                         .subscribe();
             }
-            client.getEventDispatcher().on(MessageCreateEvent.class)
+            /*client.getEventDispatcher().on(MessageCreateEvent.class)
                     .flatMap(event -> Mono.just(event.getMessage().getContent())
                             .flatMap(content -> Flux.fromIterable(commands.entrySet())
                                     .filter(entry -> content.startsWith('!' + entry.getKey()))
                                     .flatMap(entry -> entry.getValue().execute(event))
                                     .next()))
-                    .subscribe();
+                    .subscribe();*/
+            client.onDisconnect().block();
         }
         catch ( Exception exception ) {
             log.error( "Be sure to use a valid bot token!", exception );

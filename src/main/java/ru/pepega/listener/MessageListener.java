@@ -1,5 +1,7 @@
 package ru.pepega.listener;
 
+import discord4j.core.object.VoiceState;
+import discord4j.core.object.entity.Member;
 import discord4j.core.object.entity.Message;
 import reactor.core.publisher.Mono;
 
@@ -9,11 +11,12 @@ public abstract class MessageListener {
 
         return Mono.just(eventMessage)
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
-                .filter(message -> message.getContent().equalsIgnoreCase("Бот что ты умеешь"))
+                .filter(message -> message.getContent().equalsIgnoreCase("play"))
                 .flatMap(Message::getChannel)
                 .flatMap(channel -> channel.createMessage("Я умею подрубать музыку!\n" +
                         " что бы навалить музыку с ютаба зайди на голосовой канал и напиши !join\n" +
                         " - когда я залечу за тобой напиши !play и добавь ссылку на видео с ютуб\n"))
                 .then();
+
     }
 }
