@@ -4,6 +4,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBuffer;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.VoiceState;
@@ -16,11 +17,11 @@ import ru.pepega.TrackScheduler;
 
 import java.util.Arrays;
 
-public class MusicPlayer implements Player{
+public class MusicPlayer implements Player {
 
     public int volume;
 
-    String identifier = "https://www.youtube.com/watch?v=onBcln5tMQw&ab_channel=JAZZ%26BLUESJAZZ%26BLUES";
+    String identifier = "https://open.spotify.com/playlist/37i9dQZF1E36DzRgMxnjZG";
 
     final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
 
@@ -29,6 +30,8 @@ public class MusicPlayer implements Player{
     final TrackScheduler trackScheduler = new TrackScheduler(player);
 
     final AudioLoadHandler handler = new AudioLoadHandler(player);
+
+    AudioPlaylist audioPlaylist;
 
     final AudioProvider provider = new LavaPlayerAudioProvider(player);
 
@@ -42,25 +45,49 @@ public class MusicPlayer implements Player{
     @Override
     public Mono<Void> play(MessageCreateEvent event) {
         return Mono.justOrEmpty(event.getMessage().getContent())
-                .map(content -> Arrays.asList(content.split(" ")))
                 .doOnNext(command -> playerManager.loadItem(identifier, handler))
+                .onErrorResume(this::playerError)
                         .then();
     }
 
     @Override
     public Mono<Void> stop(MessageCreateEvent event) {
         return Mono.justOrEmpty(event.getMessage().getContent())
-                .map(c->Arrays.asList(c.split(" ")))
                 .doOnNext(command -> player.stopTrack())
                 .then();
     }
 
     @Override
-    public Mono<Void> setVolume(MessageCreateEvent event, int volume) {
+    public Mono<Void> setVolume(MessageCreateEvent event) {
         return Mono.justOrEmpty(event.getMessage().getContent())
                 .map(c->Arrays.asList(c.split(" ")))
-                .doOnNext(command -> player.setVolume(volume))
+                //.doOnNext(command -> player.setVolume(Integer.parseInt(command.get(1))))
+                .doOnNext(command -> player.setVolume(50))
                 .then();
+    }
+
+    @Override
+    public Mono<Void> pause(MessageCreateEvent event) {
+        return Mono.justOrEmpty(event.getMessage().getContent())
+                .doOnNext(command -> player.setPaused(true))
+                .then();
+    }
+
+    @Override
+    public Mono<Void> resume(MessageCreateEvent event) {
+        return Mono.justOrEmpty(event.getMessage().getContent())
+                .doOnNext(command -> player.setPaused(false))
+                .then();
+    }
+
+    @Override
+    public Class getEventType() {
+        return MessageCreateEvent.class;
+    }
+
+    @Override
+    public Mono<String> playerError(Throwable error) {
+        return Player.super.playerError(error);
     }
 
     public Mono<Void> join(MessageCreateEvent event){
@@ -70,6 +97,8 @@ public class MusicPlayer implements Player{
                 .flatMap(channel -> channel.join(spec -> spec.setProvider(provider)))
                 .then();
     }
+
+
 
     /*public void setIdentifier(String identifier) {
         this.identifier = identifier;

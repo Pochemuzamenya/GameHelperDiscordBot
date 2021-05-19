@@ -17,6 +17,6 @@ public class MessageUpdateListener extends MessageListener implements EventListe
         return Mono.just(event)
                 .filter(MessageUpdateEvent::isContentChanged)
                 .flatMap(MessageUpdateEvent::getMessage)
-                .flatMap(super::processCommand);
+                .flatMap(super::processCommands);
     }
 }
