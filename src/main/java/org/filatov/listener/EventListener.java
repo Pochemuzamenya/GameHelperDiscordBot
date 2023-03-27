@@ -1,4 +1,4 @@
-package ru.pepega.listener;
+package org.filatov.listener;
 
 import discord4j.core.event.domain.Event;
 import org.slf4j.Logger;

@@ -1,1 +1,35 @@
-token: 'token'
+
+spring:
+  profiles:
+    active: development
+
+---
+
+token: 'ODQwNDM1NjQyMDAwODY3MzQ4.GFXewr.yc00cKxmpTzVwyHHnQaAH8BKl1DDkOHsn8GJNI'
+steam_id: '88055080'
+
+spring:
+  config:
+    activate:
+      on-profile: development
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306
+    name: discord_bot
+    username: root
+    password: 0000
+
+---
+
+token: 'ODQwNDM1NjQyMDAwODY3MzQ4.GFXewr.yc00cKxmpTzVwyHHnQaAH8BKl1DDkOHsn8GJNI'
+steam_id: '88055080'
+
+spring:
+  config:
+    activate:
+      on-profile: test
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306
+    name: discord_bot
+    username: root
+    password: 0000
+
