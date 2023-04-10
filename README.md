@@ -1,4 +1,5 @@
 <div align="center">
+
 ![logo](files/dotalogo.png)
 
 # Discord game helper
