@@ -28,8 +28,8 @@ public class BeanRegistrationService {
         beanDefinition.setBeanClass(beanClass);
         beanFactory.registerBeanDefinition(beanMD.getBeanName(), beanDefinition);
 
-        Object contextBean = context.getBean(beanMD.getBeanName());
-        System.out.println(contextBean);
+        context.getBean(beanMD.getBeanName());
+
         return "registered";
     }
 }
