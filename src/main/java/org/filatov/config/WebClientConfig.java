@@ -17,6 +17,7 @@ public class WebClientConfig {
 
     @Value("${opendota}")
     private String baseUrl;
+
     public static final int TIMEOUT = 0;
 
     @Bean

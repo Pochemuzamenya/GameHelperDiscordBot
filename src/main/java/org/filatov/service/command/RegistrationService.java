@@ -24,6 +24,7 @@ public class RegistrationService {
                 .orElseThrow();
 
         Member newMember = Member.builder().discordUsername(username).steamId(steamId).build();
+
         return repository
                 .findByDiscordUsername(username)
                 .filter(Objects::isNull)
