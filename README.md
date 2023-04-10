@@ -1,9 +1,9 @@
 <div align="center">
+![logo](files/dotalogo.png)
 
 # Discord game helper
 
 </div>
-
 
 ## Table of contents
 * [Disclaimer](#disclaimer)
@@ -11,24 +11,12 @@
 * [Install](#install)
 * [Roadmap](#roadmap)
 
-
 ---
 
 ## Disclaimer
 
-
-
-
----
-
 Проект находится в разработке и годится только что бы поделиться кодом и практиками, пока :)
-
-
-
-
 ## Introduction
-
----
 
 Game helper разрабатывается что бы помогать определиться с выбором героя и со сборкой предметов на основе данных из профессиональных игр.
 
@@ -52,8 +40,6 @@ Game helper разрабатывается что бы помогать опре
 [//]: # (Так как обычно я играю с друзьями и discord запущен постоянно, то решение создать имеено бота напросилось само собой, плюсом мои друзья могли бы его использовать и не спрашивать у меня на ком сыграть и что собрать :&#41; )
 
 ## Install
-
----
 
 Что бы запустить бота на своей машине выполните:
 ```
@@ -113,8 +99,6 @@ mvn spring-boot:run
 Основы Spring Boot можно изучить в руководстве [Getting Started](https://spring.io/guides/gs/spring-boot/).  
 ## Roadmap
 
----
-
 Проект находится в разработке.
 
 Основные функции:
@@ -128,4 +112,7 @@ mvn spring-boot:run
 * Получение данных напрямую из клиента игры через RPC;
 
 
-[Source avatar icon](https://za.pinterest.com/pin/406942516316083151/)
+### Refs
+Иконка, которую я использовал для аватарки бота - [Source avatar icon](https://za.pinterest.com/pin/406942516316083151/)
+
+Моя почта - filatovprivate@gmail.com
