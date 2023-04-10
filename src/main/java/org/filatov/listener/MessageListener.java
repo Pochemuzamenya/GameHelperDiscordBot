@@ -5,8 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.filatov.service.command.MessageCommandExecutor;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-
 @RequiredArgsConstructor
 public abstract class MessageListener {
 
@@ -19,7 +17,6 @@ public abstract class MessageListener {
                 .filter(message -> message.getContent().startsWith("!"))
                 .flatMap(Message::getChannel)
                 .flatMap(channel -> channel.createMessage(executor.execute(eventMessage).block()))
-
                 .then();
     }
 }
