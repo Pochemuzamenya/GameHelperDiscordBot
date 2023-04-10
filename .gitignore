@@ -1,2 +1,3 @@
-*.yml
-*.properties
+## Config files with auth data
+src/main/resources/application.yml
+**.properties
