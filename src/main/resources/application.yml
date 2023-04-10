@@ -5,7 +5,7 @@ spring:
 
 ---
 
-token: 'ODQwNDM1NjQyMDAwODY3MzQ4.GFXewr.yc00cKxmpTzVwyHHnQaAH8BKl1DDkOHsn8GJNI'
+token: 'you token here'
 steam_id: '88055080'
 
 spring:
@@ -20,7 +20,7 @@ spring:
 
 ---
 
-token: 'ODQwNDM1NjQyMDAwODY3MzQ4.GFXewr.yc00cKxmpTzVwyHHnQaAH8BKl1DDkOHsn8GJNI'
+token: 'you token here'
 steam_id: '88055080'
 
 spring:
