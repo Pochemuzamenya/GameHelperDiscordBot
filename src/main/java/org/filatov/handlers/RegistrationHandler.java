@@ -9,19 +9,19 @@ import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
-public class RegistrationHandler implements CommandHandler{
+public class RegistrationHandler implements CommandHandler {
 
     private final RegistrationService service;
 
     @Override
-    public Mono<String> handleCommand(Message message) {
+    public Mono<String> handleCommand(Message event) {
         return service
-                .register(message)
+                .register(event)
                 .map(Member::getDiscordUsername);
     }
 
     @Override
     public String getMyCommandName() {
-        return "!reg";
+        return "reg";
     }
 }

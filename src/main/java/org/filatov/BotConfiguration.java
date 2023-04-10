@@ -25,13 +25,13 @@ public class BotConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger(BotConfiguration.class);
 
-    @Autowired
+
     private OpenDotaService statService;
 
     @Value("${token}")
     private String token;
 
-    @Bean
+
     public Map<String, Mono<String>> commands() {
         Map<String, Mono<String>> commandsMap = new HashMap<>();
         commandsMap.put("!winlose", statService.winLose());
@@ -58,7 +58,8 @@ public class BotConfiguration {
             client.getEventDispatcher().on(ReadyEvent.class)
                     .subscribe(event -> {
                         User self = event.getSelf();
-                        log.info(String.format("Logged in as %s#%s", self.getUsername(), self.getDiscriminator()));
+                        log.info("Успешный логин как {}#{}", self.getUsername(), self.getDiscriminator());
+                        //log.info(String.format("Logged in as %s#%s", self.getUsername(), self.getDiscriminator()));
                     });
 
             for (EventListener<T> listener : eventListeners) {

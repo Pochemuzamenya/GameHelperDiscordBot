@@ -1,14 +1,14 @@
 package org.filatov.listener;
 
 import discord4j.core.event.domain.message.MessageUpdateEvent;
-import org.filatov.service.command.CommandExecutor;
+import org.filatov.service.command.MessageCommandExecutor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
 public class MessageUpdateListener extends MessageListener implements EventListener<MessageUpdateEvent> {
 
-    public MessageUpdateListener(CommandExecutor executor) {
+    public MessageUpdateListener(MessageCommandExecutor executor) {
         super(executor);
     }
 
