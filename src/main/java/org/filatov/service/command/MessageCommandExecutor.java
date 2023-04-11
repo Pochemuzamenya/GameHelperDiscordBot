@@ -30,6 +30,7 @@ public class MessageCommandExecutor {
     public Mono<String> execute(Message message) {
         Mono<String> commandName = inputHandler.getCommandName(message.getContent());
 
+        //TODO зарефакторить блокировку
         CommandHandler commandHandler = commands.get(commandName.block());
 
         if (commandHandler != null) {
