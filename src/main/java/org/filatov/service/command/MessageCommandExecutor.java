@@ -6,13 +6,20 @@ import org.filatov.handlers.CommandHandler;
 import org.filatov.handlers.UserInputHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Класс реализует регистрацию новых команд методом {@link MessageCommandExecutor#register(String, CommandHandler)},
+ * вызывается он в {@link CommandHandler} default методом {@link CommandHandler#registerCommand(MessageCommandExecutor)}.
+ * <p>
+ * Получилось что то среднее между шаблоном <a href="https://java-design-patterns.com/patterns/registry/">реестр</a>
+ * и <a href="https://java-design-patterns.com/patterns/strategy/">стратегия</a>.
+ *
+ */
 @Service
 @RequiredArgsConstructor
 public class MessageCommandExecutor {
@@ -27,15 +34,16 @@ public class MessageCommandExecutor {
         commands.put(commandName, handler);
     }
 
+    /**
+     * Так как подпишемся мы только в классе {@link org.filatov.BotConfiguration} обрабатываем null здесь
+     *
+     */
     public Mono<String> execute(Message message) {
         Mono<String> commandName = inputHandler.getCommandName(message.getContent());
 
-        CommandHandler commandHandler = commands.get(commandName.block());
-
-        if (commandHandler != null) {
-            return commandHandler.handleCommand(message);
-        }
-
-        return Mono.just("Команда не найдена");
+        return commandName
+                .map(name -> commands.get(name))
+                .flatMap(handler -> handler.handleCommand(message))
+                .onErrorResume(e -> Mono.just("Команда не найдена"));
     }
 }

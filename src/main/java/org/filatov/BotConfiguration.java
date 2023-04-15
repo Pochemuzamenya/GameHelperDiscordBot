@@ -20,16 +20,27 @@ public class BotConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger(BotConfiguration.class);
 
+    /**
+     * Получаем токен на портале разработчика discord
+     */
     @Value("${token}")
     private String token;
 
+    /**
+     * Discord отправляет информацию в режиме реального времени подключенным клиентам через события (Event)
+     * <p>
+     * Слушать события приложение может с помощью метода {@link discord4j.core.GatewayDiscordClient#on(java.lang.Class)}
+     * <p>
+     * Spring инжектит нам лист @param eventListeners
+     * @return {@link GatewayDiscordClient}
+     * @param <T> для собственных типов событий
+     */
     @Bean
     public <T extends Event> GatewayDiscordClient gatewayDiscordClient(List<EventListener<T>> eventListeners) {
 
         GatewayDiscordClient client = null;
 
         try {
-
             client = DiscordClientBuilder.create(token)
                     .build()
                     .login()
