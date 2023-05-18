@@ -3,13 +3,14 @@ package org.filatov.handlers;
 import discord4j.core.object.entity.Message;
 import lombok.RequiredArgsConstructor;
 import org.filatov.api.HeroStats;
+import org.filatov.handlers.util.UserInputHandler;
 import org.filatov.model.DotaItems;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class DotaStatCommandHandler implements CommandHandler{
+public class PopularItemCommandHandler implements CommandHandler{
 
     private final HeroStats heroStatsService;
 
@@ -47,7 +48,7 @@ public class DotaStatCommandHandler implements CommandHandler{
 
     @Override
     public String getMyCommandName() {
-        return "stat";
+        return "item";
     }
 
 }
