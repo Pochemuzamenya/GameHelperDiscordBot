@@ -86,7 +86,6 @@ spring:
 
 `guild_id` нужен для создания слэш команд. Что это такое - [Discord4j Docs](https://docs.discord4j.com/interactions/application-commands)
 
----
 ### Сборка
 
 ---
