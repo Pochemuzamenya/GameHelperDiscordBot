@@ -2,6 +2,7 @@ package org.filatov.handlers;
 
 import discord4j.core.object.entity.Message;
 import lombok.RequiredArgsConstructor;
+import org.filatov.handlers.util.UserInputHandler;
 import org.filatov.model.springbean.BeanMD;
 import org.filatov.service.BeanRegistrationService;
 import org.springframework.stereotype.Service;

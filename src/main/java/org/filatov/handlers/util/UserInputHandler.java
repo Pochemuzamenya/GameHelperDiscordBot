@@ -1,4 +1,4 @@
-package org.filatov.handlers;
+package org.filatov.handlers.util;
 
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

@@ -3,7 +3,7 @@ package org.filatov.service.command;
 import discord4j.core.object.entity.Message;
 import lombok.RequiredArgsConstructor;
 import org.filatov.handlers.CommandHandler;
-import org.filatov.handlers.UserInputHandler;
+import org.filatov.handlers.util.UserInputHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

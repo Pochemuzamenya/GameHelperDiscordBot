@@ -1,13 +1,12 @@
 package org.filatov.handlers;
 
+import org.filatov.handlers.util.UserInputHandler;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserInputHandlerTest {
 
