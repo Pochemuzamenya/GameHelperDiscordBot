@@ -3,6 +3,7 @@ package org.filatov.handlers;
 import discord4j.core.object.entity.Message;
 import lombok.RequiredArgsConstructor;
 import org.filatov.api.HeroStats;
+import org.filatov.handlers.util.OutputHandler;
 import org.filatov.handlers.util.UserInputHandler;
 import org.filatov.model.DotaItems;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ public class PopularItemCommandHandler implements CommandHandler{
     private final HeroStats heroStatsService;
 
     private final UserInputHandler inputHandler;
+
+    private final OutputHandler outputHandler;
 
     @Override
     public Mono<String> handleCommand(Message event)  {
@@ -33,7 +36,11 @@ public class PopularItemCommandHandler implements CommandHandler{
                         hero -> heroStatsService
                                 .getPopularItems(String.valueOf(hero.getId()))
                 );
-        return dotaItemsMono.map(DotaItems::toString);
+
+        return dotaItemsMono.
+                flatMapMany(outputHandler::output)
+                .collectList()
+                .map(list-> String.join("", list));
     }
 
     private Mono<String> getHeroName(Message event) {
