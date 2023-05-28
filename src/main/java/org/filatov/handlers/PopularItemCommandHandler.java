@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class PopularItemCommandHandler implements CommandHandler{
+public class PopularItemCommandHandler implements CommandHandler<Message>{
 
     private final HeroStats heroStatsService;
 
@@ -20,7 +20,7 @@ public class PopularItemCommandHandler implements CommandHandler{
     private final OutputHandler outputHandler;
 
     @Override
-    public Mono<String> handleCommand(Message event)  {
+    public Mono<Void> handleCommand(Message event)  {
 
         Mono<DotaItems> dotaItemsMono = getHeroName(event)
                 .flatMap(
@@ -37,10 +37,11 @@ public class PopularItemCommandHandler implements CommandHandler{
                                 .getPopularItems(String.valueOf(hero.getId()))
                 );
 
-        return dotaItemsMono.
+        Mono<String> map = dotaItemsMono.
                 flatMapMany(outputHandler::output)
                 .collectList()
-                .map(list-> String.join("", list));
+                .map(list -> String.join("", list));
+        return Mono.empty();
     }
 
     private Mono<String> getHeroName(Message event) {

@@ -1,7 +1,5 @@
 package org.filatov.service;
 
-import org.filatov.model.Member;
-import org.filatov.service.db.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

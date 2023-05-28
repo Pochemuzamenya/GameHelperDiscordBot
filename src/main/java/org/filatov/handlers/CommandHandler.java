@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.core.publisher.Mono;
 
-public interface CommandHandler {
+public interface CommandHandler<T> {
 
     Logger LOG = LoggerFactory.getLogger(CommandHandler.class);
 
-    Mono<String> handleCommand(Message event);
+    Mono<Void> handleCommand(T event);
 
     String getMyCommandName();
 
