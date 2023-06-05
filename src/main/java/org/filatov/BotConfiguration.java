@@ -6,9 +6,13 @@ import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.Event;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.object.entity.User;
+import discord4j.rest.RestClient;
+import org.filatov.appcommand.AppCommand;
 import org.filatov.listener.EventListener;
+import org.filatov.service.command.appcommand.AppCommandDispatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +30,9 @@ public class BotConfiguration {
     @Value("${token}")
     private String token;
 
+    @Autowired
+    private AppCommandDispatcher dispatcher;
+
     /**
      * Discord отправляет информацию в режиме реального времени подключенным клиентам через события (Event)
      * <p>
@@ -36,7 +43,7 @@ public class BotConfiguration {
      * @param <T> для собственных типов событий
      */
     @Bean
-    public <T extends Event> GatewayDiscordClient gatewayDiscordClient(List<EventListener<T>> eventListeners) {
+    public <T extends Event> GatewayDiscordClient gatewayDiscordClient(List<EventListener<T>> eventListeners, List<AppCommand> commands) {
 
         GatewayDiscordClient client = null;
 
@@ -47,6 +54,11 @@ public class BotConfiguration {
                     .block();
 
             assert client != null;
+
+            for (AppCommand appCommand : commands) {
+                dispatcher.register(appCommand.command(), discordRestClient(client));
+                log.info("команда: {} зарегестрирована", appCommand.command().name());
+            }
 
             client.getEventDispatcher().on(ReadyEvent.class)
                     .subscribe(event -> {
@@ -66,5 +78,10 @@ public class BotConfiguration {
         }
 
         return client;
+    }
+
+    @Bean
+    public RestClient discordRestClient(GatewayDiscordClient client) {
+        return client.getRestClient();
     }
 }

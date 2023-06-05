@@ -1,17 +1,20 @@
 package org.filatov.handlers;
 
+import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
 import lombok.RequiredArgsConstructor;
 import org.filatov.api.HeroStats;
 import org.filatov.handlers.util.OutputHandler;
 import org.filatov.handlers.util.UserInputHandler;
-import org.filatov.model.DotaItems;
-import org.springframework.stereotype.Service;
+import org.filatov.model.PopularItems;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-@Service
+
 @RequiredArgsConstructor
-public class PopularItemCommandHandler implements CommandHandler<Message>{
+public class PopularItemCommandHandler{
+    Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     private final HeroStats heroStatsService;
 
@@ -19,10 +22,9 @@ public class PopularItemCommandHandler implements CommandHandler<Message>{
 
     private final OutputHandler outputHandler;
 
-    @Override
-    public Mono<Void> handleCommand(Message event)  {
+    public Mono<Void> handleCommand(MessageCreateEvent event)  {
 
-        Mono<DotaItems> dotaItemsMono = getHeroName(event)
+        Mono<PopularItems> dotaItemsMono = getHeroName(event.getMessage())
                 .flatMap(
                         name -> heroStatsService
                                 .getHeroes().filter(
@@ -54,7 +56,6 @@ public class PopularItemCommandHandler implements CommandHandler<Message>{
                 });
     }
 
-    @Override
     public String getMyCommandName() {
         return "item";
     }
