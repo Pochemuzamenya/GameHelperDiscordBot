@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.filatov.handlers.util.ResourceHandler;
-import org.filatov.model.DotaItem;
+import org.filatov.model.Item;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -37,12 +37,12 @@ public class FileConstantUtils {
         return map;
     }
 
-    public Map<String, DotaItem> getItemConstant(String path) {
+    public Map<String, Item> getItemConstant(String path) {
         ObjectMapper mapper = new ObjectMapper();
-        TypeReference<HashMap<String, DotaItem>> typeRef = new TypeReference<HashMap<String, DotaItem>>() {};
+        TypeReference<HashMap<String, Item>> typeRef = new TypeReference<HashMap<String, Item>>() {};
         Flux<String> readFile = resourceHandler.readFile(Path.of(path));
         String json = readFile.toStream().collect(Collectors.joining());
-        HashMap<String, DotaItem> map;
+        HashMap<String, Item> map;
         try {
             map = mapper.readValue(json, typeRef);
         } catch (JsonProcessingException e) {

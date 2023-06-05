@@ -1,8 +1,8 @@
 package org.filatov.handlers.util;
 
 import lombok.RequiredArgsConstructor;
-import org.filatov.model.DotaItems;
-import org.filatov.model.DotaItemsDTO;
+import org.filatov.model.PopularItems;
+import org.filatov.model.PopularItemsDTO;
 import org.filatov.service.util.FileConstantUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ public class OutputHandler {
 
     private final String CDN = "https://cdn.cloudflare.steamstatic.com/";
 
-    public Flux<String> output(DotaItems items) {
+    public Flux<String> output(PopularItems items) {
 
         Set<String> idStartGameSet = items.getStart_game_items().keySet();
         Set<String> idEarlyGameSet = items.getEarly_game_items().keySet();
@@ -38,13 +38,13 @@ public class OutputHandler {
 
         return Flux.zip(startGame, earlyGame, midGame, lateGame)
                 .flatMap(tuple ->
-                        Flux.just(DotaItemsDTO.builder()
+                        Flux.just(PopularItemsDTO.builder()
                                 .startGame(tuple.getT1())
                                 .earlyGame(tuple.getT2())
                                 .midGame(tuple.getT3())
                                 .lateGame(tuple.getT4())
                                 .build()
-                        )).map(DotaItemsDTO::toString);
+                        )).map(PopularItemsDTO::toString);
     }
 
     private Flux<String> getListItems(Set<String> idGameSet) {

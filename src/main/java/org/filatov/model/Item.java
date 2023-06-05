@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DotaItem {
+public class Item {
 
     private Integer id;
     private String img;

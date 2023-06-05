@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class DotaHero {
+public class Hero {
     private Integer id;
     private String name;
     private String localized_name;

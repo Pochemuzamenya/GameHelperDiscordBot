@@ -2,8 +2,8 @@ package org.filatov.api;
 
 
 import lombok.RequiredArgsConstructor;
-import org.filatov.model.DotaHero;
-import org.filatov.model.DotaItems;
+import org.filatov.model.Hero;
+import org.filatov.model.PopularItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,12 +19,12 @@ public class HeroStats {
 
     private final WebClient webClient;
 
-    public Flux<DotaHero> getHeroes(){
+    public Flux<Hero> getHeroes(){
         return webClient
                 .get()
                 .uri(String.join("", "heroes"))
                 .retrieve()
-                .bodyToFlux(DotaHero.class);
+                .bodyToFlux(Hero.class);
     }
 
     public Flux<String> getHeroMatchups(String id) {
@@ -35,11 +35,11 @@ public class HeroStats {
                 .bodyToFlux(String.class);
     }
 
-    public Mono<DotaItems > getPopularItems(String heroId) {
+    public Mono<PopularItems> getPopularItems(String heroId) {
         return webClient
                 .get()
                 .uri(String.join("/", "heroes", heroId, "itemPopularity"))
                 .retrieve()
-                .bodyToMono(DotaItems.class);
+                .bodyToMono(PopularItems.class);
     }
 }

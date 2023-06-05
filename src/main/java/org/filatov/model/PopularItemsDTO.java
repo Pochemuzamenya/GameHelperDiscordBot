@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class DotaItemsDTO {
+public class PopularItemsDTO {
     private List<String> startGame;
     private List<String> earlyGame;
     private List<String> midGame;
