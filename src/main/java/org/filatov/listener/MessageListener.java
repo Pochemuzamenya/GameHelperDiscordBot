@@ -2,13 +2,12 @@ package org.filatov.listener;
 
 import discord4j.core.object.entity.Message;
 import lombok.RequiredArgsConstructor;
-import org.filatov.service.command.MessageCommandExecutor;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+@Service
 @RequiredArgsConstructor
 public abstract class MessageListener {
-
-    private final MessageCommandExecutor executor;
 
     public Mono<Void> processCommands(Message eventMessage) {
 
@@ -16,7 +15,7 @@ public abstract class MessageListener {
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
                 .filter(message -> message.getContent().startsWith("!"))
                 .flatMap(Message::getChannel)
-                .flatMap(channel -> channel.createMessage(executor.execute(eventMessage).block()))
+                .flatMap(channel -> channel.createMessage("hi"))
                 .then();
     }
 }
